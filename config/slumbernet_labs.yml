@@ -1,0 +1,71 @@
+general:
+  device: cuda   
+
+dirs:
+  basedir: '/work3/laurose/SlumberNet/preprocessed_data/'
+  directory: '/work3/laurose/SlumberNet/preprocessed_data/eeg_training_data'
+  input_directory: '/work3/laurose/SlumberNet/preprocessed_data/'
+  data_file: ''
+  cache: '/work3/laurose/SlumberNet/'  # directory for cached files like the tranformed data file (see experiment.data.file)
+  output_directory: '/work3/laurose/SlumberNet/models/fixed_n/'
+  data: '/work3/laurose/accusleep/labdata/raw/'  # directory containing data
+
+  
+data:
+  sample_duration: 1  # seconds
+  sampling_rate: 128  # Hz
+  number_of_samples_per_second: 256
+  number_seconds_per_epoch: 4
+  labs: ['Antoine', 'Kornum', 'Alessandro', 'Sebastian', 'Maiken']
+  original_fs:  # Hz
+    Alessandro: 128
+    Antoine: 512
+    Kornum: 400
+  labs_channels: 
+      Alessandro: 
+        EEG1: 0
+        EMG: 1
+      Antoine:
+        EEG1: 0
+        EEG2: 1
+        EEG3: 2
+        EEG4: 3
+        EMG: 4
+      Maiken:
+        EEG1: 0
+        EMG: 1
+      Kornum:
+        EEG1: 0
+        EEG2: 1
+        EMG: 2
+      Sebastian:
+        EEG1: 1
+        EEG2: 2
+        EMG: 0
+  file: 'LabData_v2.h5'  # stored in cache dir
+  data_fraction: True # True if keeping sample size from original model
+  stages: ['Wake', 'Non REM', 'REM'] # ['Wake', 'Non REM', 'REM', 'Art']
+  original_dataset_size: 366122 # rebalanced dataset #2 (see table 2 of Grieger)
+  validation_split: 0.2
+
+  
+experiment: 
+  set_seed: 154727
+  fixed_n: False   
+
+training: 
+  num_epochs: 50
+  learning_rate: 0.000001
+  batch_size_per_gpu: 128
+
+model: 
+  n_resnet_blocks: 7
+  n_feature_maps: 8
+  nb_classes: 3
+  kernel_expansion_fct: 1 
+  kernel_y: 2
+  strides_size: 1 
+  dropout_rate: 0 
+  augment_data: "yes" 
+  model_name: "final_model_labdata.h5"
+  loss_type: 'weighted_ce'
